@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Bugathon Dashboard</title>
+    <link rel="stylesheet" href="styles.css?v=local2">
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Floating Controls (Fixed Position) -->
+        <header class="main-header">
+            <div class="header-controls">
+                <div class="timer-display" id="timer">01:30:00</div>
+                <div class="control-actions">
+                    <button class="icon-btn" id="btn-timer-toggle" onclick="startTimer()" title="Start/Pause">
+                        <!-- Play/Pause Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="transform: translateX(2px);">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="resetTimer()" title="Reset">
+                        <!-- Reset Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                            <path d="M3 3v5h5"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+
+        <!-- Main Content -->
+        <!-- Hero Stats (New Section) -->
+        <section id="hero-stats">
+            <div class="hero-top-row">
+                <div class="hero-card big-stat">
+                    <div class="hero-label">סה״כ באגים</div>
+                    <div class="hero-value" id="hero-total">0</div>
+                </div>
+                <div class="hero-card big-stat">
+                    <div class="hero-label">נסגרו</div>
+                    <div class="hero-value success-text" id="hero-done">0</div>
+                </div>
+                <div class="hero-card big-stat">
+                    <div class="hero-label">אחוז סיום</div>
+                    <div class="hero-value accent-text" id="hero-pct">0%</div>
+                </div>
+            </div>
+
+            <div class="hero-status-grid" id="status-grid">
+                <!-- Dynamic Status Cards injected here -->
+            </div>
+        </section>
+
+        <!-- Main Content (Leaderboards moved to bottom) -->
+        <main>
+            <!-- Developers Leaderboard -->
+            <div class="leaderboard-column">
+                <div class="column-header">Dev</div>
+                <div class="rank-list" id="dev-list"></div>
+            </div>
+
+            <!-- Testers Leaderboard -->
+            <div class="leaderboard-column">
+                <div class="column-header">Qa</div>
+                <div class="rank-list" id="test-list"></div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-dev-count">0</div>
+                <div class="stat-label">מפתחים</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-test-count">0</div>
+                <div class="stat-label">בודקים</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total-bugs">0</div>
+                <div class="stat-label">סה״כ באגים</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total-done">0</div>
+                <div class="stat-label">באגים נסגרו</div>
+            </div>
+
+        </footer>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="script.js?v=local7"></script>
+</body>
+
+</html>
