@@ -72,7 +72,10 @@ public class JiraProxy : IHttpHandler {
                     }
                 }
             }
-            context.Response.Write("{\"error\": \"Jira Error\", \"details\": " + Newtonsoft.Json.JsonConvert.SerializeObject(message) + "}");
+            
+            // Use native serializer to avoid external dependencies (Newtonsoft)
+            System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            context.Response.Write("{\"error\": \"Jira Error\", \"details\": " + serializer.Serialize(message) + "}");
         }
         catch (Exception ex) {
             context.Response.StatusCode = 500;
