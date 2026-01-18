@@ -35,10 +35,9 @@ public class JiraProxy : IHttpHandler {
         WriteLog(context, "Target URL Base: " + jiraBaseUrl);
 
         // Get Config Keys
-        // We now support just a Token (Bearer) based on user's working curl example
+        // Get Config Keys
+        // Strictly Bearer Token (PAT)
         string apiKey = ConfigurationManager.AppSettings["JiraApiKey"];
-        // Optional: Support email if someone really needs Basic Auth, but prioritize Bearer if no email
-        string email = ConfigurationManager.AppSettings["JiraEmail"]; 
 
         if (string.IsNullOrEmpty(apiKey)) {
             WriteLog(context, "ERROR: Missing JiraApiKey in Web.config");
@@ -47,16 +46,12 @@ public class JiraProxy : IHttpHandler {
             return;
         }
         
-        WriteLog(context, "Auth Mode: " + (string.IsNullOrEmpty(email) ? "Bearer Token" : "Basic Auth"));
+        WriteLog(context, "Auth Mode: Bearer Token");
 
-        // Get Query Params
         string jql = context.Request.QueryString["jql"];
-        if (string.IsNullOrEmpty(jql)) {
-            jql = defaultJql;
-        }
+        if (string.IsNullOrEmpty(jql)) jql = defaultJql;
 
         try {
-            // Build Request
             string url = jiraBaseUrl + "?jql=" + HttpUtility.UrlEncode(jql);
             WriteLog(context, "Full Request URL: " + url);
             
@@ -64,15 +59,8 @@ public class JiraProxy : IHttpHandler {
             request.Method = "GET";
             request.Accept = "application/json";
 
-            // AUTHENTICATION LOGIC SWITCH
-            if (!string.IsNullOrEmpty(email)) {
-                 // Basic Auth (Legacy / Cloud)
-                 string auth = Convert.ToBase64String(Encoding.ASCII.GetBytes(email + ":" + apiKey));
-                 request.Headers.Add("Authorization", "Basic " + auth);
-            } else {
-                 // Bearer Token (Data Center / Server - Matches user's curl)
-                 request.Headers.Add("Authorization", "Bearer " + apiKey);
-            }
+            // Bearer Token Authentication
+            request.Headers.Add("Authorization", "Bearer " + apiKey);
 
             WriteLog(context, "Sending Request...");
 
