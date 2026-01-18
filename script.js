@@ -17,7 +17,7 @@ const CONFIG = {
     CALCULATE_POINTS: true, // Activity mode
     LEADERBOARD_LIMIT: 5, // Max users to show in "Top X"
     TIMER_DURATION_MINUTES: 90, // 1.5 Hours Default
-    DATA_SOURCE_URL: 'api/jira', // Relative path for unified server
+    DATA_SOURCE_URL: 'JiraProxy.ashx', // .NET Handler
     ICONS: {
         PLAY: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(2px);"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`,
         PAUSE: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`

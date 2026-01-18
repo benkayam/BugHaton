@@ -3,5 +3,4 @@
 *.log
 bin/
 obj/
-appsettings.json
 *.user
