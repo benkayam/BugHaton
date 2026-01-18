@@ -1,7 +1,7 @@
 .agent/
 .DS_Store
 *.log
-*.bak
-*~
-node_modules/
-.env
+bin/
+obj/
+appsettings.json
+*.user
