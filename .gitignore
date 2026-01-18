@@ -3,3 +3,5 @@
 *.log
 *.bak
 *~
+node_modules/
+.env
