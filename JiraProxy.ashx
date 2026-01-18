@@ -35,18 +35,19 @@ public class JiraProxy : IHttpHandler {
         WriteLog(context, "Target URL Base: " + jiraBaseUrl);
 
         // Get Config Keys
-        string email = ConfigurationManager.AppSettings["JiraEmail"];
+        // We now support just a Token (Bearer) based on user's working curl example
         string apiKey = ConfigurationManager.AppSettings["JiraApiKey"];
+        // Optional: Support email if someone really needs Basic Auth, but prioritize Bearer if no email
+        string email = ConfigurationManager.AppSettings["JiraEmail"]; 
 
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(apiKey)) {
-            WriteLog(context, "ERROR: Missing JiraEmail or JiraApiKey in Web.config");
+        if (string.IsNullOrEmpty(apiKey)) {
+            WriteLog(context, "ERROR: Missing JiraApiKey in Web.config");
             context.Response.StatusCode = 500;
             context.Response.Write("{\"error\": \"Missing Jira configuration\"}");
             return;
         }
         
-        // Log masked credentials for verification
-        WriteLog(context, "Config Found - Email: " + email + ", ApiKey Length: " + apiKey.Length);
+        WriteLog(context, "Auth Mode: " + (string.IsNullOrEmpty(email) ? "Bearer Token" : "Basic Auth"));
 
         // Get Query Params
         string jql = context.Request.QueryString["jql"];
@@ -63,9 +64,15 @@ public class JiraProxy : IHttpHandler {
             request.Method = "GET";
             request.Accept = "application/json";
 
-            // Basic Auth
-            string auth = Convert.ToBase64String(Encoding.ASCII.GetBytes(email + ":" + apiKey));
-            request.Headers.Add("Authorization", "Basic " + auth);
+            // AUTHENTICATION LOGIC SWITCH
+            if (!string.IsNullOrEmpty(email)) {
+                 // Basic Auth (Legacy / Cloud)
+                 string auth = Convert.ToBase64String(Encoding.ASCII.GetBytes(email + ":" + apiKey));
+                 request.Headers.Add("Authorization", "Basic " + auth);
+            } else {
+                 // Bearer Token (Data Center / Server - Matches user's curl)
+                 request.Headers.Add("Authorization", "Bearer " + apiKey);
+            }
 
             WriteLog(context, "Sending Request...");
 
